@@ -51,15 +51,17 @@ class FilteredDiagnostics:
       filter will need to be.
 
       recurse through the continuously filtered data sets until
-      we find the diag value we need foe the life support ratings
+      we find the diag value we need for the life support ratings
 
       for each iteration
       - filter based on the entry filter (a regex)
       - for matches
         - assemble the filtered data set
         - parse the diag messages to get the frequency counts
-        -
-
+      - if we've narrowed to 1 convert to decimal and return
+      - otherwise, based on frequency counts
+        - construct the next filter
+        - setup for recursion
     """
 
     def __init__(self, bound="upper"):
