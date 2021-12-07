@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sys
-import pprint
 
 
 def load_input(infile):
@@ -41,11 +40,11 @@ class BingoCard:
         return
 
     def check_draw(self, draw):
+        self.draws += 1
         for ridx, row in enumerate(self.card):
             for cidx, cell in enumerate(row):
                 if draw == cell:
                     self.matches[ridx][cidx] = 1
-                    self.draws += 1
                     self.last_draw = draw
 
         return
@@ -60,8 +59,6 @@ class BingoCard:
                 col_sum[cidx] = col_sum[cidx] + cell
 
         if 5 in col_sum:
-            # print(col_sum)
-            # pprint.pprint(self.card)
             return True
 
         return False
@@ -73,7 +70,6 @@ class BingoCard:
                 if cell == 0:
                     score = score + self.card[ridx][cidx]
 
-        # print(self.draws, self.last_draw)
         self.score = score * self.last_draw
         return
 
@@ -98,45 +94,34 @@ def main(inputs_file):
 
     min_draws = 0
     min_score = 0
-    min_card = []
     min_last_draw = 0
 
     max_draws = 0
     max_score = 0
-    max_card = []
     max_last_draw = 0
 
     for card in cards:
         c = BingoCard(card)
         c.play_card(draws)
         if c.bingo:
-            print(c.draws, c.score)
             if min_draws == 0:
                 min_draws = c.draws
 
             if c.draws <= min_draws:
                 min_draws = c.draws
                 min_score = c.score
-                min_card = c.card
                 min_last_draw = c.last_draw
-                # print("min")
-                # pprint.pprint(c.__dict__)
 
             if c.draws >= max_draws:
                 max_draws = c.draws
                 max_score = c.score
-                max_card = c.card
                 max_last_draw = c.last_draw
-                # print("max")
-                # pprint.pprint(c.__dict__)
 
     print("win fast")
     print(min_draws, min_score, min_last_draw)
-    pprint.pprint(min_card)
 
     print("lose slow")
     print(max_draws, max_score, max_last_draw)
-    pprint.pprint(max_card)
 
 
 if __name__ == "__main__":
