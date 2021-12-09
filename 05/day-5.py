@@ -55,6 +55,27 @@ class Map:
         for y in range(a, b + 1):
             self.grid[x, y] = self.grid[x, y] + 1
 
+    def diag_update(self, start, end):
+        if start[0] < end[0]:
+            x_step = 1
+            x_b = end[0] + 1
+        else:
+            x_step = -1
+            x_b = end[0] - 1
+
+        if start[1] < end[1]:
+            y_step = 1
+            y_b = end[1] + 1
+        else:
+            y_step = -1
+            y_b = end[1] - 1
+
+        xlist = list(range(start[0], x_b, x_step))
+        ylist = list(range(start[1], y_b, y_step))
+        line = zip(xlist, ylist)
+        for cell in line:
+            self.grid[cell[0], cell[1]] = self.grid[cell[0], cell[1]] + 1
+
     def get_points(self):
         points = np.count_nonzero(self.grid > 1)
         return points
@@ -68,11 +89,12 @@ def main(inputs_file):
     for i in inputs:
         start, end = parse_input(i)
         if start[0] == end[0]:
-            print(start, end)
             vent_map.y_update(start, end)
         elif start[1] == end[1]:
-            print(start, end)
             vent_map.x_update(start, end)
+        else:
+            # print("d", start, end)
+            vent_map.diag_update(start, end)
 
     print(vent_map.grid)
     print(vent_map.get_points())
